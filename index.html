@@ -1,0 +1,3307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para ti 🌻</title>
+
+<style>
+
+  :root{
+    --cream: #fdf6e9;
+    --cream-2: #fbead0;
+    --gold: #d9a441;
+    --gold-deep: #b8860b;
+    --petal: #ffc94a;
+    --petal-deep: #f5a623;
+    --petal-tip: #ffe08a;
+    --green: #4d7c4a;
+    --green-deep: #35592f;
+    --ink: #4a3a22;
+    --blush: #f3c9b0;
+  }
+
+  *{
+    box-sizing:border-box;
+  }
+
+  html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    min-height:100%;
+    overflow-x:hidden;
+    font-family:'Georgia','Iowan Old Style',serif;
+    color:var(--ink);
+  }
+
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(
+        circle at 30% 20%,
+        #fff8ea 0%,
+        var(--cream) 45%,
+        var(--cream-2) 75%,
+        #f8dcb0 100%
+      );
+    position:relative;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ============================================================
+     PANTALLA DE CARGA
+     ============================================================ */
+
+  #loading-screen{
+    position:fixed;
+    inset:0;
+    z-index:100;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
+    background:
+      radial-gradient(
+        circle at 50% 45%,
+        #fff8ea 0%,
+        var(--cream) 50%,
+        var(--cream-2) 100%
+      );
+
+    transition:
+      opacity 1s ease,
+      visibility 1s ease;
+  }
+
+  #loading-screen.hide{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+
+  .loading-flower{
+    font-size:3.2rem;
+
+    animation:
+      loadingFlower 1.8s ease-in-out infinite;
+
+    filter:
+      drop-shadow(
+        0 5px 12px rgba(184,134,11,.22)
+      );
+  }
+
+  .loading-title{
+    margin-top:18px;
+    margin-bottom:6px;
+
+    font-size:
+      clamp(1.35rem,4vw,2rem);
+
+    color:var(--gold-deep);
+
+    font-weight:normal;
+
+    letter-spacing:.3px;
+
+    opacity:0;
+
+    animation:
+      loadingText 1s ease forwards .3s;
+  }
+
+  .loading-subtitle{
+    font-size:.88rem;
+    color:#9b7a3f;
+    letter-spacing:.3px;
+    opacity:0;
+
+    animation:
+      loadingText 1s ease forwards .7s;
+  }
+
+  .loading-dots{
+    display:flex;
+    gap:6px;
+    margin-top:22px;
+  }
+
+  .loading-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--gold);
+
+    animation:
+      loadingDot 1.2s ease-in-out infinite;
+  }
+
+  .loading-dot:nth-child(2){
+    animation-delay:.15s;
+  }
+
+  .loading-dot:nth-child(3){
+    animation-delay:.3s;
+  }
+
+  @keyframes loadingFlower{
+
+    0%,100%{
+      transform:
+        scale(1)
+        rotate(-4deg);
+    }
+
+    50%{
+      transform:
+        scale(1.12)
+        rotate(4deg);
+    }
+
+  }
+
+  @keyframes loadingText{
+
+    from{
+      opacity:0;
+      transform:translateY(8px);
+    }
+
+    to{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+  }
+
+  @keyframes loadingDot{
+
+    0%,100%{
+      opacity:.3;
+      transform:translateY(0);
+    }
+
+    50%{
+      opacity:1;
+      transform:translateY(-4px);
+    }
+
+  }
+
+  /* ============================================================
+     FONDO
+     ============================================================ */
+
+  .sky{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    z-index:0;
+    pointer-events:none;
+  }
+
+  .glow{
+    position:absolute;
+    width:60vmax;
+    height:60vmax;
+    left:50%;
+    top:48%;
+    transform:translate(-50%,-50%);
+
+    background:
+      radial-gradient(
+        circle,
+        rgba(255,214,120,0.55) 0%,
+        rgba(255,214,120,0.0) 65%
+      );
+
+    filter:blur(10px);
+  }
+
+  .blush-wash{
+    position:absolute;
+    inset:0;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,255,255,0) 0%,
+        rgba(247,214,196,0.35) 100%
+      );
+  }
+
+  .mote{
+    position:absolute;
+    border-radius:50%;
+    background:var(--gold);
+    opacity:.55;
+    animation:float-up linear infinite;
+  }
+
+  @keyframes float-up{
+
+    0%{
+      transform:
+        translateY(0)
+        translateX(0);
+      opacity:0;
+    }
+
+    10%{
+      opacity:.6;
+    }
+
+    90%{
+      opacity:.4;
+    }
+
+    100%{
+      transform:
+        translateY(-110vh)
+        translateX(20px);
+      opacity:0;
+    }
+
+  }
+
+  /* ============================================================
+     INTRO
+     ============================================================ */
+
+  #intro{
+    position:fixed;
+    inset:0;
+    z-index:20;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+    padding:24px;
+
+    transition:
+      opacity 1s ease,
+      visibility 1s ease;
+  }
+
+  #intro.hidden{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+
+  .intro-text{
+    font-size:
+      clamp(1.4rem,4vw,2.2rem);
+
+    color:var(--ink);
+
+    margin-bottom:34px;
+
+    letter-spacing:.3px;
+
+    opacity:0;
+
+    animation:
+      appear 1.4s ease forwards .3s;
+  }
+
+  @keyframes appear{
+
+    to{
+      opacity:1;
+    }
+
+  }
+
+  #reveal-btn{
+    font-family:inherit;
+
+    font-size:1.05rem;
+
+    padding:16px 34px;
+
+    border-radius:40px;
+
+    border:none;
+
+    cursor:pointer;
+
+    background:
+      linear-gradient(
+        135deg,
+        var(--petal),
+        var(--gold-deep)
+      );
+
+    color:#fff8e8;
+
+    box-shadow:
+      0 10px 30px rgba(184,134,11,.35);
+
+    letter-spacing:.5px;
+
+    opacity:0;
+
+    animation:
+      appear 1.4s ease forwards .9s;
+
+    transition:
+      transform .35s ease,
+      box-shadow .35s ease;
+  }
+
+  #reveal-btn:hover{
+    transform:
+      translateY(-3px)
+      scale(1.03);
+
+    box-shadow:
+      0 14px 34px rgba(184,134,11,.45);
+  }
+
+  #reveal-btn:active{
+    transform:
+      translateY(0)
+      scale(.98);
+  }
+
+  /* ============================================================
+     ESCENARIO
+     ============================================================ */
+
+  #stage{
+    position:relative;
+    z-index:1;
+
+    flex:1;
+
+    width:100%;
+    min-height:100vh;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:40px 24px 60px;
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:
+      opacity .9s ease;
+  }
+
+  #stage.show{
+    opacity:1;
+    visibility:visible;
+  }
+
+  .composition{
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:
+      clamp(10px,5vw,60px);
+
+    flex-wrap:wrap;
+
+    max-width:1000px;
+
+    width:100%;
+
+    margin:0 auto;
+  }
+
+  /* ============================================================
+     RAMO
+     ============================================================ */
+
+  .flower-wrap{
+    position:relative;
+
+    width:min(52vw,460px);
+
+    max-width:92vw;
+
+    display:flex;
+
+    justify-content:center;
+
+    filter:
+      drop-shadow(
+        0 30px 40px rgba(120,80,20,.18)
+      );
+
+    margin:0 auto;
+  }
+
+  #flowerSvg{
+    width:100%;
+    height:auto;
+
+    overflow:visible;
+
+    cursor:pointer;
+
+    display:block;
+
+    touch-action:manipulation;
+  }
+
+  .petal{
+    transition:
+      filter .4s ease;
+  }
+
+  .flower-wrap:hover .petal{
+    filter:
+      drop-shadow(
+        0 0 9px rgba(255,214,110,.85)
+      );
+  }
+
+  /* ============================================================
+     BALANCEO GENERAL
+     ============================================================ */
+
+  .sway{
+    animation:
+      sway 5.5s ease-in-out infinite;
+
+    transform-origin:
+      300px 645px;
+  }
+
+  @keyframes sway{
+
+    0%,100%{
+      transform:
+        rotate(-1.3deg);
+    }
+
+    50%{
+      transform:
+        rotate(1.3deg);
+    }
+
+  }
+
+  /* ============================================================
+     LAS 9 FLORES
+     ============================================================ */
+
+  .bloom-a{
+    animation:sway-a 5.5s ease-in-out infinite;
+    transform-origin:300px 220px;
+  }
+
+  .bloom-b{
+    animation:sway-b 6.2s ease-in-out infinite;
+    transform-origin:195px 290px;
+  }
+
+  .bloom-c{
+    animation:sway-c 5.8s ease-in-out infinite;
+    transform-origin:405px 270px;
+  }
+
+  .bloom-d{
+    animation:sway-d 5.9s ease-in-out infinite;
+    transform-origin:145px 380px;
+  }
+
+  .bloom-e{
+    animation:sway-e 6.4s ease-in-out infinite;
+    transform-origin:455px 390px;
+  }
+
+  .bloom-f{
+    animation:sway-f 6.1s ease-in-out infinite;
+    transform-origin:105px 250px;
+  }
+
+  .bloom-g{
+    animation:sway-g 6.7s ease-in-out infinite;
+    transform-origin:495px 255px;
+  }
+
+  .bloom-h{
+    animation:sway-h 5.7s ease-in-out infinite;
+    transform-origin:205px 445px;
+  }
+
+  .bloom-i{
+    animation:sway-i 6.3s ease-in-out infinite;
+    transform-origin:395px 445px;
+  }
+
+  @keyframes sway-a{
+    0%,100%{transform:rotate(-1deg);}
+    50%{transform:rotate(1.2deg);}
+  }
+
+  @keyframes sway-b{
+    0%,100%{transform:rotate(1.4deg);}
+    50%{transform:rotate(-1.1deg);}
+  }
+
+  @keyframes sway-c{
+    0%,100%{transform:rotate(-1.2deg);}
+    50%{transform:rotate(1.3deg);}
+  }
+
+  @keyframes sway-d{
+    0%,100%{transform:rotate(1.3deg);}
+    50%{transform:rotate(-2deg);}
+  }
+
+  @keyframes sway-e{
+    0%,100%{transform:rotate(-1.4deg);}
+    50%{transform:rotate(2deg);}
+  }
+
+  @keyframes sway-f{
+    0%,100%{transform:rotate(-1.6deg);}
+    50%{transform:rotate(1.8deg);}
+  }
+
+  @keyframes sway-g{
+    0%,100%{transform:rotate(1.5deg);}
+    50%{transform:rotate(-1.8deg);}
+  }
+
+  @keyframes sway-h{
+    0%,100%{transform:rotate(1.2deg);}
+    50%{transform:rotate(-1.7deg);}
+  }
+
+  @keyframes sway-i{
+    0%,100%{transform:rotate(-1.3deg);}
+    50%{transform:rotate(1.8deg);}
+  }
+
+  /* ============================================================
+     DESTELLOS
+     ============================================================ */
+
+  .sparkle{
+    opacity:0;
+
+    transform-origin:center;
+
+    animation:
+      sparkle-in 2.4s ease-in-out infinite;
+  }
+
+  @keyframes sparkle-in{
+
+    0%{
+      opacity:0;
+
+      transform:
+        scale(.4)
+        rotate(0deg);
+    }
+
+    45%{
+      opacity:1;
+
+      transform:
+        scale(1)
+        rotate(90deg);
+    }
+
+    100%{
+      opacity:0;
+
+      transform:
+        scale(.4)
+        rotate(180deg);
+    }
+
+  }
+
+  /* ============================================================
+     PÉTALOS CAYENDO
+     ============================================================ */
+
+  .falling-petal{
+    position:fixed;
+
+    top:-30px;
+
+    width:14px;
+    height:14px;
+
+    background:var(--petal);
+
+    border-radius:
+      60% 0 60% 0;
+
+    opacity:.85;
+
+    z-index:5;
+
+    pointer-events:none;
+
+    animation:
+      fall linear forwards;
+  }
+
+  @keyframes fall{
+
+    to{
+
+      transform:
+        translateY(115vh)
+        translateX(var(--drift))
+        rotate(400deg);
+
+      opacity:0;
+    }
+
+  }
+
+  /* ============================================================
+     FRASES
+     ============================================================ */
+
+  .float-phrase{
+    position:fixed;
+
+    z-index:30;
+
+    font-size:1.05rem;
+
+    color:var(--gold-deep);
+
+    background:
+      rgba(255,250,238,.92);
+
+    padding:10px 20px;
+
+    border-radius:30px;
+
+    box-shadow:
+      0 8px 24px rgba(120,80,20,.2);
+
+    pointer-events:none;
+
+    white-space:nowrap;
+
+    animation:
+      float-phrase 2.6s ease forwards;
+  }
+
+  @keyframes float-phrase{
+
+    0%{
+      opacity:0;
+
+      transform:
+        translate(-50%,0)
+        scale(.85);
+    }
+
+    15%{
+      opacity:1;
+
+      transform:
+        translate(-50%,-10px)
+        scale(1);
+    }
+
+    80%{
+      opacity:1;
+
+      transform:
+        translate(-50%,-40px)
+        scale(1);
+    }
+
+    100%{
+      opacity:0;
+
+      transform:
+        translate(-50%,-55px)
+        scale(.95);
+    }
+
+  }
+
+  /* ============================================================
+     TARJETA
+     ============================================================ */
+
+  .card-column{
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    margin:0 auto;
+  }
+
+  .tag-string{
+    width:2px;
+    height:26px;
+
+    background:
+      linear-gradient(
+        180deg,
+        var(--gold-deep),
+        var(--gold)
+      );
+  }
+
+  .tag-hole{
+    width:16px;
+    height:16px;
+
+    border-radius:50%;
+
+    border:
+      3px solid var(--gold-deep);
+
+    background:var(--cream);
+
+    margin-bottom:-3px;
+  }
+
+  .card-wrap{
+    position:relative;
+
+    width:min(330px,88vw);
+
+    perspective:1200px;
+
+    cursor:pointer;
+  }
+
+  .card-wrap::after{
+    content:"";
+
+    position:absolute;
+
+    inset:
+      10px -8px -10px 8px;
+
+    background:var(--blush);
+
+    border-radius:22px;
+
+    transform:rotate(3deg);
+
+    z-index:0;
+
+    opacity:.8;
+  }
+
+  .card-flip{
+    position:relative;
+
+    width:100%;
+
+    transform-style:preserve-3d;
+
+    transition:
+      transform .9s cubic-bezier(.2,.75,.25,1);
+
+    z-index:1;
+  }
+
+  .card-wrap.flipped .card-flip{
+    transform:
+      rotateY(180deg);
+  }
+
+  .card,
+  .card-back{
+    position:relative;
+
+    width:100%;
+
+    backface-visibility:hidden;
+
+    -webkit-backface-visibility:hidden;
+  }
+
+  .card{
+    z-index:1;
+
+    background:
+      radial-gradient(
+        circle at 12% 12%,
+        rgba(217,164,65,.10) 0%,
+        rgba(217,164,65,0) 40%
+      ),
+      linear-gradient(
+        155deg,
+        #fffaf0 0%,
+        var(--cream-2) 100%
+      );
+
+    border-radius:22px;
+
+    padding:38px 30px 30px;
+
+    box-shadow:
+      0 25px 50px rgba(140,100,30,.2),
+      0 2px 0 rgba(255,255,255,.6) inset;
+
+    border:
+      1px solid rgba(217,164,65,.4);
+
+    transform:rotate(-1.2deg);
+
+    text-align:center;
+  }
+
+  .card::before{
+    content:"";
+
+    position:absolute;
+
+    inset:8px;
+
+    border:
+      1px solid rgba(217,164,65,.45);
+
+    border-radius:16px;
+
+    pointer-events:none;
+  }
+
+  .corner-flourish{
+    position:absolute;
+
+    width:34px;
+    height:34px;
+
+    opacity:.65;
+  }
+
+  .cf-tl{
+    top:10px;
+    left:10px;
+  }
+
+  .cf-br{
+    bottom:10px;
+    right:10px;
+
+    transform:rotate(180deg);
+  }
+
+  .card-title{
+    font-size:1.55rem;
+
+    color:var(--gold-deep);
+
+    margin:
+      0 0 18px;
+
+    font-weight:normal;
+
+    letter-spacing:.3px;
+  }
+
+  .card-message{
+    font-size:.98rem;
+
+    line-height:1.65;
+
+    color:var(--ink);
+
+    margin:
+      0 0 14px;
+  }
+
+  .card-message.small{
+    font-size:.93rem;
+  }
+
+  .card-sign{
+    margin-top:18px;
+
+    font-style:italic;
+
+    color:var(--gold-deep);
+
+    font-size:1rem;
+  }
+
+  .card-divider{
+    width:46px;
+    height:2px;
+
+    background:
+      linear-gradient(
+        90deg,
+        transparent,
+        var(--gold),
+        transparent
+      );
+
+    margin:18px auto;
+
+    border-radius:2px;
+  }
+
+  .card-back{
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:12px;
+
+    background:
+      linear-gradient(
+        155deg,
+        #fffaf0 0%,
+        var(--cream-2) 100%
+      );
+
+    border-radius:22px;
+
+    border:
+      1px solid rgba(217,164,65,.4);
+
+    box-shadow:
+      0 25px 50px rgba(140,100,30,.2),
+      0 2px 0 rgba(255,255,255,.6) inset;
+
+    transform:
+      rotateY(180deg)
+      rotate(-1.2deg);
+
+    overflow:hidden;
+  }
+
+  .photo-frame{
+    position:relative;
+
+    width:100%;
+    height:100%;
+
+    min-height:300px;
+
+    padding:10px;
+
+    border-radius:16px;
+
+    border:
+      1px solid rgba(217,164,65,.45);
+
+    background:
+      radial-gradient(
+        circle at 12% 12%,
+        rgba(217,164,65,.10) 0%,
+        rgba(217,164,65,0) 40%
+      ),
+      #fffaf0;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    overflow:hidden;
+  }
+
+  .photo-frame img{
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    border-radius:10px;
+
+    display:block;
+
+    box-shadow:
+      0 5px 18px rgba(120,80,20,.18);
+  }
+
+  /* ============================================================
+     LETRERO
+     ============================================================ */
+
+  .interaction-hint{
+    position:fixed;
+
+    left:50%;
+    bottom:18px;
+
+    z-index:45;
+
+    width:max-content;
+
+    max-width:90vw;
+
+    text-align:center;
+
+    color:var(--gold-deep);
+
+    background:
+      rgba(255,250,238,.90);
+
+    border:
+      1px solid rgba(217,164,65,.35);
+
+    border-radius:30px;
+
+    padding:9px 20px;
+
+    box-shadow:
+      0 8px 24px rgba(120,80,20,.14);
+
+    font-size:.86rem;
+
+    letter-spacing:.2px;
+
+    opacity:0;
+    visibility:hidden;
+
+    transform:
+      translateX(-50%)
+      translateY(10px)
+      scale(.95);
+
+    transition:
+      opacity .6s ease,
+      visibility .6s ease,
+      transform .6s ease;
+
+    pointer-events:none;
+  }
+
+  .interaction-hint.show{
+    opacity:1;
+    visibility:visible;
+
+    transform:
+      translateX(-50%)
+      translateY(0)
+      scale(1);
+
+    animation:
+      hintFloat 3s ease-in-out infinite 1s;
+  }
+
+  .interaction-hint strong{
+    display:block;
+
+    font-weight:normal;
+
+    font-size:.95rem;
+  }
+
+  .interaction-hint span{
+    display:block;
+
+    margin-top:2px;
+
+    font-size:.76rem;
+
+    color:#9b7a3f;
+  }
+
+  @keyframes hintFloat{
+
+    0%,100%{
+      margin-bottom:0;
+    }
+
+    50%{
+      margin-bottom:3px;
+    }
+
+  }
+
+  .interaction-hint.hide{
+    opacity:0;
+    visibility:hidden;
+
+    transform:
+      translateX(-50%)
+      translateY(10px)
+      scale(.95);
+  }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+
+  footer{
+    position:relative;
+
+    z-index:1;
+
+    text-align:center;
+
+    padding:
+      10px 20px 46px;
+
+    color:var(--gold-deep);
+
+    opacity:0;
+  }
+
+  #stage.show + footer{
+    animation:
+      appear 1s ease forwards .4s;
+  }
+
+  .footer-date{
+    font-size:1.05rem;
+
+    letter-spacing:.5px;
+
+    margin-bottom:4px;
+  }
+
+  .footer-sub{
+    font-size:.82rem;
+
+    color:#9b7a3f;
+
+    letter-spacing:.3px;
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+
+  @media(max-width:760px){
+
+    .composition{
+      flex-direction:column;
+    }
+
+    .flower-wrap{
+      width:min(78vw,340px);
+    }
+
+    .interaction-hint{
+      bottom:14px;
+
+      width:auto;
+
+      max-width:90vw;
+
+      padding:8px 16px;
+    }
+
+  }
+
+  @media(prefers-reduced-motion:reduce){
+
+    *{
+      animation-duration:.01ms !important;
+
+      animation-iteration-count:1 !important;
+    }
+
+  }
+
+  /* ============================================================
+     CONTROL DE MÚSICA
+     ============================================================ */
+
+  #music-control{
+    position:fixed;
+
+    right:18px;
+    bottom:18px;
+
+    z-index:50;
+
+    width:42px;
+    height:42px;
+
+    border:
+      1px solid rgba(184,134,11,.35);
+
+    border-radius:50%;
+
+    background:
+      rgba(253,246,233,.85);
+
+    color:var(--gold-deep);
+
+    font-size:17px;
+
+    cursor:pointer;
+
+    box-shadow:
+      0 6px 18px rgba(120,80,20,.18);
+
+    opacity:0;
+    visibility:hidden;
+
+    transform:scale(.8);
+
+    transition:
+      opacity .4s ease,
+      visibility .4s ease,
+      transform .3s ease;
+  }
+
+  #music-control.show{
+    opacity:1;
+    visibility:visible;
+
+    transform:scale(1);
+  }
+
+  #music-control:hover{
+    transform:scale(1.08);
+  }
+
+  #music-control:active{
+    transform:scale(.95);
+  }
+
+</style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     PANTALLA DE CARGA
+     ============================================================ -->
+
+<div id="loading-screen">
+
+  <div class="loading-flower">
+    🌻
+  </div>
+
+  <div class="loading-title">
+    Preparando algo para ti...
+  </div>
+
+  <div class="loading-subtitle">
+    Un pequeño detalle está por llegar 💛
+  </div>
+
+  <div class="loading-dots">
+    <span class="loading-dot"></span>
+    <span class="loading-dot"></span>
+    <span class="loading-dot"></span>
+  </div>
+
+</div>
+
+<!-- ============================================================
+     MÚSICA
+     ============================================================ -->
+
+<audio id="music" preload="auto" loop>
+  <source src="cancion.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ============================================================
+     FONDO
+     ============================================================ -->
+
+<div class="sky">
+
+  <div class="glow"></div>
+  <div class="blush-wash"></div>
+  <div id="motes"></div>
+
+</div>
+
+<!-- ============================================================
+     PANTALLA DE BIENVENIDA
+     ============================================================ -->
+
+<div id="intro">
+
+  <p class="intro-text">
+    Tengo algo bonito para ti&hellip;
+  </p>
+
+  <button id="reveal-btn">
+    Ver mi regalo 🌻
+  </button>
+
+</div>
+
+<!-- ============================================================
+     ESCENARIO PRINCIPAL
+     ============================================================ -->
+
+<main id="stage">
+
+  <div class="composition">
+
+    <!-- ========================================================
+         RAMO DE 9 FLORES
+         ======================================================== -->
+
+    <div class="flower-wrap">
+
+      <svg
+        id="flowerSvg"
+        viewBox="0 0 600 700"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+
+        <defs>
+
+          <radialGradient
+            id="petalGrad"
+            cx="35%"
+            cy="30%"
+            r="75%"
+          >
+
+            <stop
+              offset="0%"
+              stop-color="#ffe9a8"
+            />
+
+            <stop
+              offset="55%"
+              stop-color="var(--petal)"
+            />
+
+            <stop
+              offset="100%"
+              stop-color="var(--petal-deep)"
+            />
+
+          </radialGradient>
+
+          <radialGradient
+            id="centerGrad"
+            cx="40%"
+            cy="35%"
+            r="65%"
+          >
+
+            <stop
+              offset="0%"
+              stop-color="#8a5a22"
+            />
+
+            <stop
+              offset="55%"
+              stop-color="#6b4419"
+            />
+
+            <stop
+              offset="100%"
+              stop-color="#4a2e10"
+            />
+
+          </radialGradient>
+
+          <linearGradient
+            id="stemGrad"
+            x1="0"
+            y1="0"
+            x2="1"
+            y2="0"
+          >
+
+            <stop
+              offset="0%"
+              stop-color="var(--green-deep)"
+            />
+
+            <stop
+              offset="100%"
+              stop-color="var(--green)"
+            />
+
+          </linearGradient>
+
+          <linearGradient
+            id="leafGrad"
+            x1="0"
+            y1="0"
+            x2="1"
+            y2="1"
+          >
+
+            <stop
+              offset="0%"
+              stop-color="var(--green)"
+            />
+
+            <stop
+              offset="100%"
+              stop-color="var(--green-deep)"
+            />
+
+          </linearGradient>
+
+          <linearGradient
+            id="ribbonGrad"
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
+          >
+
+            <stop
+              offset="0%"
+              stop-color="#f6d3c0"
+            />
+
+            <stop
+              offset="100%"
+              stop-color="var(--blush)"
+            />
+
+          </linearGradient>
+
+        </defs>
+
+        <!-- ====================================================
+             GRUPO PRINCIPAL
+             ==================================================== -->
+
+        <g class="sway">
+
+          <!-- ==================================================
+               TALLOS ORIGINALES
+               ================================================== -->
+
+          <path
+            d="M300,645 C240,560 195,440 195,300"
+            stroke="url(#stemGrad)"
+            stroke-width="8"
+            fill="none"
+            stroke-linecap="round"
+          />
+
+          <path
+            d="M300,645 C355,560 400,440 405,290"
+            stroke="url(#stemGrad)"
+            stroke-width="8"
+            fill="none"
+            stroke-linecap="round"
+          />
+
+          <path
+            d="M300,645 C298,500 300,360 300,240"
+            stroke="url(#stemGrad)"
+            stroke-width="10"
+            fill="none"
+            stroke-linecap="round"
+          />
+
+          <!-- ==================================================
+               TALLOS D / E
+               ================================================== -->
+
+          <path
+            d="M300,645 C245,560 190,465 145,380"
+            stroke="url(#stemGrad)"
+            stroke-width="6"
+            fill="none"
+            stroke-linecap="round"
+          />
+
+          <path
+            d="M300,645 C360,570 415,475 455,390"
+            stroke="url(#stemGrad)"
+            stroke-width="6"
+            fill="none"
+            stroke-linecap="round"
+          />
+
+          <!-- ==================================================
+               TALLOS F / G
+               ================================================== -->
+
+          <path
+            d="M300,645 C225,545 150,390 105,250"
+            stroke="url(#stemGrad)"
+            stroke-width="5"
+            fill="none"
+            stroke-linecap="round"
+          />
+
+          <path
+            d="M300,645 C375,545 450,395 495,255"
+            stroke="url(#stemGrad)"
+            stroke-width="5"
+            fill="none"
+            stroke-linecap="round"
+          />
+
+          <!-- ==================================================
+               TALLOS H / I
+               ================================================== -->
+
+          <path
+            d="M300,645 C270,570 235,500 205,445"
+            stroke="url(#stemGrad)"
+            stroke-width="5"
+            fill="none"
+            stroke-linecap="round"
+          />
+
+          <path
+            d="M300,645 C330,570 365,500 395,445"
+            stroke="url(#stemGrad)"
+            stroke-width="5"
+            fill="none"
+            stroke-linecap="round"
+          />
+
+          <!-- ==================================================
+               HOJAS
+               ================================================== -->
+
+          <path
+            d="M255,470 C195,460 140,485 108,530 C170,538 228,515 253,478 Z"
+            fill="url(#leafGrad)"
+          />
+
+          <path
+            d="M345,430 C405,415 460,435 492,478 C432,492 375,472 348,438 Z"
+            fill="url(#leafGrad)"
+          />
+
+          <path
+            d="M296,400 C270,350 275,300 305,260 C325,310 320,362 300,402 Z"
+            fill="url(#leafGrad)"
+          />
+
+          <path
+            d="M198,360 C165,340 145,305 148,265 C188,280 210,315 202,358 Z"
+            fill="url(#leafGrad)"
+          />
+
+          <path
+            d="M402,350 C438,332 458,298 452,258 C412,272 390,308 398,348 Z"
+            fill="url(#leafGrad)"
+          />
+
+          <path
+            d="M220,520 C175,505 135,515 105,548 C150,562 194,550 223,526 Z"
+            fill="url(#leafGrad)"
+          />
+
+          <path
+            d="M380,515 C425,500 465,510 495,545 C450,558 405,548 377,522 Z"
+            fill="url(#leafGrad)"
+          />
+
+          <!-- ==================================================
+               HOJAS ADICIONALES PARA EL RAMO GRANDE
+               ================================================== -->
+
+          <path
+            d="M170,440 C125,425 90,438 70,470 C110,482 150,468 174,447 Z"
+            fill="url(#leafGrad)"
+          />
+
+          <path
+            d="M430,440 C475,425 510,438 530,470 C490,482 450,468 426,447 Z"
+            fill="url(#leafGrad)"
+          />
+
+          <path
+            d="M235,560 C200,548 170,555 148,580 C182,590 215,582 238,566 Z"
+            fill="url(#leafGrad)"
+          />
+
+          <path
+            d="M365,560 C400,548 430,555 452,580 C418,590 385,582 362,566 Z"
+            fill="url(#leafGrad)"
+          />
+
+          <!-- ==================================================
+               LISTÓN
+               ================================================== -->
+
+          <g>
+
+            <path
+              d="M300,645 C270,632 250,612 258,592 C266,610 284,622 300,626 Z"
+              fill="url(#ribbonGrad)"
+            />
+
+            <path
+              d="M300,645 C330,632 350,612 342,592 C334,610 316,622 300,626 Z"
+              fill="url(#ribbonGrad)"
+            />
+
+            <circle
+              cx="300"
+              cy="632"
+              r="9"
+              fill="var(--gold)"
+            />
+
+            <path
+              d="M292,650 L280,672 L296,664 Z"
+              fill="url(#ribbonGrad)"
+            />
+
+            <path
+              d="M308,650 L320,672 L304,664 Z"
+              fill="url(#ribbonGrad)"
+            />
+
+          </g>
+
+          <!-- ==================================================
+               FLOR B
+               ================================================== -->
+
+          <g class="bloom-b" id="bloomB">
+
+            <g
+              class="sparkle"
+              style="
+                transform-origin:120px 240px;
+                animation-delay:.3s;
+              "
+            >
+
+              <path
+                d="M120,232 L123,240 L131,243 L123,246 L120,254 L117,246 L109,243 L117,240 Z"
+                fill="#ffe9a8"
+              />
+
+            </g>
+
+            <g transform="translate(195,290) scale(.72)">
+              <g id="petalsBackB"></g>
+            </g>
+
+            <g transform="translate(195,290) scale(.72)">
+              <g id="petalsFrontB"></g>
+            </g>
+
+            <circle
+              cx="195"
+              cy="290"
+              r="46"
+              fill="url(#centerGrad)"
+            />
+
+            <g transform="translate(195,290)">
+
+              <circle cx="-20" cy="-15" r="3" fill="#3a2409"/>
+              <circle cx="-2" cy="-22" r="3" fill="#3a2409"/>
+              <circle cx="18" cy="-14" r="3" fill="#3a2409"/>
+              <circle cx="24" cy="4" r="3" fill="#3a2409"/>
+              <circle cx="10" cy="20" r="3" fill="#3a2409"/>
+              <circle cx="-12" cy="20" r="3" fill="#3a2409"/>
+              <circle cx="-26" cy="4" r="3" fill="#3a2409"/>
+              <circle cx="0" cy="0" r="3.2" fill="#3a2409"/>
+
+            </g>
+
+          </g>
+
+          <!-- ==================================================
+               FLOR C
+               ================================================== -->
+
+          <g class="bloom-c" id="bloomC">
+
+            <g
+              class="sparkle"
+              style="
+                transform-origin:475px 220px;
+                animation-delay:.9s;
+              "
+            >
+
+              <path
+                d="M475,212 L478,220 L486,223 L478,226 L475,234 L472,226 L464,223 L472,220 Z"
+                fill="#ffe9a8"
+              />
+
+            </g>
+
+            <g transform="translate(405,270) scale(.76)">
+              <g id="petalsBackC"></g>
+            </g>
+
+            <g transform="translate(405,270) scale(.76)">
+              <g id="petalsFrontC"></g>
+            </g>
+
+            <circle
+              cx="405"
+              cy="270"
+              r="46"
+              fill="url(#centerGrad)"
+            />
+
+            <g transform="translate(405,270)">
+
+              <circle cx="-20" cy="-15" r="3" fill="#3a2409"/>
+              <circle cx="-2" cy="-22" r="3" fill="#3a2409"/>
+              <circle cx="18" cy="-14" r="3" fill="#3a2409"/>
+              <circle cx="24" cy="4" r="3" fill="#3a2409"/>
+              <circle cx="10" cy="20" r="3" fill="#3a2409"/>
+              <circle cx="-12" cy="20" r="3" fill="#3a2409"/>
+              <circle cx="-26" cy="4" r="3" fill="#3a2409"/>
+              <circle cx="0" cy="0" r="3.2" fill="#3a2409"/>
+
+            </g>
+
+          </g>
+
+          <!-- ==================================================
+               FLOR PRINCIPAL A
+               ================================================== -->
+
+          <g class="bloom-a" id="bloomA">
+
+            <g
+              class="sparkle"
+              style="transform-origin:170px 130px;"
+            >
+
+              <path
+                d="M170,120 L174,130 L184,134 L174,138 L170,148 L166,138 L156,134 L166,130 Z"
+                fill="#ffe9a8"
+              />
+
+            </g>
+
+            <g
+              class="sparkle"
+              style="
+                transform-origin:430px 110px;
+                animation-delay:.6s;
+              "
+            >
+
+              <path
+                d="M430,102 L433,110 L441,113 L433,116 L430,124 L427,116 L419,113 L427,110 Z"
+                fill="#ffe9a8"
+              />
+
+            </g>
+
+            <g
+              class="sparkle"
+              style="
+                transform-origin:440px 260px;
+                animation-delay:1.2s;
+              "
+            >
+
+              <path
+                d="M440,253 L443,260 L450,263 L443,266 L440,273 L437,266 L430,263 L437,260 Z"
+                fill="#ffe9a8"
+              />
+
+            </g>
+
+            <g transform="translate(300,220)">
+              <g id="petalsBackA"></g>
+            </g>
+
+            <g transform="translate(300,220)">
+              <g id="petalsFrontA"></g>
+            </g>
+
+            <circle
+              cx="300"
+              cy="220"
+              r="48"
+              fill="url(#centerGrad)"
+            />
+
+            <g transform="translate(300,220)">
+
+              <circle cx="-22" cy="-16" r="3.4" fill="#3a2409"/>
+              <circle cx="-2" cy="-24" r="3.4" fill="#3a2409"/>
+              <circle cx="20" cy="-16" r="3.4" fill="#3a2409"/>
+              <circle cx="26" cy="6" r="3.4" fill="#3a2409"/>
+              <circle cx="12" cy="22" r="3.4" fill="#3a2409"/>
+              <circle cx="-12" cy="22" r="3.4" fill="#3a2409"/>
+              <circle cx="-28" cy="6" r="3.4" fill="#3a2409"/>
+              <circle cx="0" cy="0" r="3.6" fill="#3a2409"/>
+
+            </g>
+
+          </g>
+
+          <!-- ==================================================
+               FLOR D
+               ================================================== -->
+
+          <g class="bloom-d" id="bloomD">
+
+            <g
+              class="sparkle"
+              style="
+                transform-origin:105px 335px;
+                animation-delay:1.4s;
+              "
+            >
+
+              <path
+                d="M105,328 L108,335 L115,338 L108,341 L105,348 L102,341 L95,338 L102,335 Z"
+                fill="#ffe9a8"
+              />
+
+            </g>
+
+            <g transform="translate(145,380) scale(.55)">
+              <g id="petalsBackD"></g>
+            </g>
+
+            <g transform="translate(145,380) scale(.55)">
+              <g id="petalsFrontD"></g>
+            </g>
+
+            <circle
+              cx="145"
+              cy="380"
+              r="35"
+              fill="url(#centerGrad)"
+            />
+
+            <g transform="translate(145,380)">
+
+              <circle cx="-15" cy="-11" r="2.4" fill="#3a2409"/>
+              <circle cx="-1" cy="-16" r="2.4" fill="#3a2409"/>
+              <circle cx="14" cy="-10" r="2.4" fill="#3a2409"/>
+              <circle cx="17" cy="4" r="2.4" fill="#3a2409"/>
+              <circle cx="8" cy="15" r="2.4" fill="#3a2409"/>
+              <circle cx="-8" cy="15" r="2.4" fill="#3a2409"/>
+              <circle cx="-17" cy="4" r="2.4" fill="#3a2409"/>
+              <circle cx="0" cy="0" r="2.7" fill="#3a2409"/>
+
+            </g>
+
+          </g>
+
+          <!-- ==================================================
+               FLOR E
+               ================================================== -->
+
+          <g class="bloom-e" id="bloomE">
+
+            <g
+              class="sparkle"
+              style="
+                transform-origin:500px 350px;
+                animation-delay:1.8s;
+              "
+            >
+
+              <path
+                d="M500,343 L503,350 L510,353 L503,356 L500,363 L497,356 L490,353 L497,350 Z"
+                fill="#ffe9a8"
+              />
+
+            </g>
+
+            <g transform="translate(455,390) scale(.58)">
+              <g id="petalsBackE"></g>
+            </g>
+
+            <g transform="translate(455,390) scale(.58)">
+              <g id="petalsFrontE"></g>
+            </g>
+
+            <circle
+              cx="455"
+              cy="390"
+              r="36"
+              fill="url(#centerGrad)"
+            />
+
+            <g transform="translate(455,390)">
+
+              <circle cx="-15" cy="-11" r="2.5" fill="#3a2409"/>
+              <circle cx="-1" cy="-17" r="2.5" fill="#3a2409"/>
+              <circle cx="14" cy="-11" r="2.5" fill="#3a2409"/>
+              <circle cx="18" cy="4" r="2.5" fill="#3a2409"/>
+              <circle cx="8" cy="16" r="2.5" fill="#3a2409"/>
+              <circle cx="-8" cy="16" r="2.5" fill="#3a2409"/>
+              <circle cx="-18" cy="4" r="2.5" fill="#3a2409"/>
+              <circle cx="0" cy="0" r="2.8" fill="#3a2409"/>
+
+            </g>
+
+          </g>
+
+          <!-- ==================================================
+               FLOR F
+               ================================================== -->
+
+          <g class="bloom-f" id="bloomF">
+
+            <g
+              class="sparkle"
+              style="
+                transform-origin:75px 205px;
+                animation-delay:2s;
+              "
+            >
+
+              <path
+                d="M75,198 L78,205 L85,208 L78,211 L75,218 L72,211 L65,208 L72,205 Z"
+                fill="#ffe9a8"
+              />
+
+            </g>
+
+            <g transform="translate(105,250) scale(.43)">
+              <g id="petalsBackF"></g>
+            </g>
+
+            <g transform="translate(105,250) scale(.43)">
+              <g id="petalsFrontF"></g>
+            </g>
+
+            <circle
+              cx="105"
+              cy="250"
+              r="29"
+              fill="url(#centerGrad)"
+            />
+
+            <g transform="translate(105,250)">
+
+              <circle cx="-12" cy="-9" r="2" fill="#3a2409"/>
+              <circle cx="-1" cy="-13" r="2" fill="#3a2409"/>
+              <circle cx="12" cy="-8" r="2" fill="#3a2409"/>
+              <circle cx="14" cy="3" r="2" fill="#3a2409"/>
+              <circle cx="7" cy="12" r="2" fill="#3a2409"/>
+              <circle cx="-7" cy="12" r="2" fill="#3a2409"/>
+              <circle cx="-14" cy="3" r="2" fill="#3a2409"/>
+              <circle cx="0" cy="0" r="2.3" fill="#3a2409"/>
+
+            </g>
+
+          </g>
+
+          <!-- ==================================================
+               FLOR G
+               ================================================== -->
+
+          <g class="bloom-g" id="bloomG">
+
+            <g
+              class="sparkle"
+              style="
+                transform-origin:525px 210px;
+                animation-delay:2.3s;
+              "
+            >
+
+              <path
+                d="M525,203 L528,210 L535,213 L528,216 L525,223 L522,216 L515,213 L522,210 Z"
+                fill="#ffe9a8"
+              />
+
+            </g>
+
+            <g transform="translate(495,255) scale(.45)">
+              <g id="petalsBackG"></g>
+            </g>
+
+            <g transform="translate(495,255) scale(.45)">
+              <g id="petalsFrontG"></g>
+            </g>
+
+            <circle
+              cx="495"
+              cy="255"
+              r="30"
+              fill="url(#centerGrad)"
+            />
+
+            <g transform="translate(495,255)">
+
+              <circle cx="-12" cy="-9" r="2" fill="#3a2409"/>
+              <circle cx="-1" cy="-13" r="2" fill="#3a2409"/>
+              <circle cx="12" cy="-8" r="2" fill="#3a2409"/>
+              <circle cx="14" cy="3" r="2" fill="#3a2409"/>
+              <circle cx="7" cy="12" r="2" fill="#3a2409"/>
+              <circle cx="-7" cy="12" r="2" fill="#3a2409"/>
+              <circle cx="-14" cy="3" r="2" fill="#3a2409"/>
+              <circle cx="0" cy="0" r="2.3" fill="#3a2409"/>
+
+            </g>
+
+          </g>
+
+          <!-- ==================================================
+               FLOR H
+               ================================================== -->
+
+          <g class="bloom-h" id="bloomH">
+
+            <g
+              class="sparkle"
+              style="
+                transform-origin:165px 430px;
+                animation-delay:2.7s;
+              "
+            >
+
+              <path
+                d="M165,423 L168,430 L175,433 L168,436 L165,443 L162,436 L155,433 L162,430 Z"
+                fill="#ffe9a8"
+              />
+
+            </g>
+
+            <g transform="translate(205,445) scale(.47)">
+              <g id="petalsBackH"></g>
+            </g>
+
+            <g transform="translate(205,445) scale(.47)">
+              <g id="petalsFrontH"></g>
+            </g>
+
+            <circle
+              cx="205"
+              cy="445"
+              r="31"
+              fill="url(#centerGrad)"
+            />
+
+            <g transform="translate(205,445)">
+
+              <circle cx="-13" cy="-9" r="2" fill="#3a2409"/>
+              <circle cx="-1" cy="-14" r="2" fill="#3a2409"/>
+              <circle cx="13" cy="-9" r="2" fill="#3a2409"/>
+              <circle cx="15" cy="4" r="2" fill="#3a2409"/>
+              <circle cx="7" cy="13" r="2" fill="#3a2409"/>
+              <circle cx="-7" cy="13" r="2" fill="#3a2409"/>
+              <circle cx="-15" cy="4" r="2" fill="#3a2409"/>
+              <circle cx="0" cy="0" r="2.3" fill="#3a2409"/>
+
+            </g>
+
+          </g>
+
+          <!-- ==================================================
+               FLOR I
+               ================================================== -->
+
+          <g class="bloom-i" id="bloomI">
+
+            <g
+              class="sparkle"
+              style="
+                transform-origin:435px 430px;
+                animation-delay:3.1s;
+              "
+            >
+
+              <path
+                d="M435,423 L438,430 L445,433 L438,436 L435,443 L432,436 L425,433 L432,430 Z"
+                fill="#ffe9a8"
+              />
+
+            </g>
+
+            <g transform="translate(395,445) scale(.47)">
+              <g id="petalsBackI"></g>
+            </g>
+
+            <g transform="translate(395,445) scale(.47)">
+              <g id="petalsFrontI"></g>
+            </g>
+
+            <circle
+              cx="395"
+              cy="445"
+              r="31"
+              fill="url(#centerGrad)"
+            />
+
+            <g transform="translate(395,445)">
+
+              <circle cx="-13" cy="-9" r="2" fill="#3a2409"/>
+              <circle cx="-1" cy="-14" r="2" fill="#3a2409"/>
+              <circle cx="13" cy="-9" r="2" fill="#3a2409"/>
+              <circle cx="15" cy="4" r="2" fill="#3a2409"/>
+              <circle cx="7" cy="13" r="2" fill="#3a2409"/>
+              <circle cx="-7" cy="13" r="2" fill="#3a2409"/>
+              <circle cx="-15" cy="4" r="2" fill="#3a2409"/>
+              <circle cx="0" cy="0" r="2.3" fill="#3a2409"/>
+
+            </g>
+
+          </g>
+
+        </g>
+
+      </svg>
+
+    </div>
+
+    <!-- ========================================================
+         TARJETA
+         ======================================================== -->
+
+    <div class="card-column">
+
+      <div class="tag-hole"></div>
+
+      <div class="tag-string"></div>
+
+      <div
+        class="card-wrap"
+        id="cardWrap"
+        title="Haz clic para voltear la tarjeta"
+      >
+
+        <div class="card-flip">
+
+          <section class="card">
+
+            <svg
+              class="corner-flourish cf-tl"
+              viewBox="0 0 40 40"
+            >
+
+              <path
+                d="M2,2 C15,2 20,10 20,20 C20,10 28,4 38,6 M2,2 C2,15 10,20 20,20"
+                stroke="var(--gold)"
+                stroke-width="1.6"
+                fill="none"
+                stroke-linecap="round"
+              />
+
+            </svg>
+
+            <svg
+              class="corner-flourish cf-br"
+              viewBox="0 0 40 40"
+            >
+
+              <path
+                d="M2,2 C15,2 20,10 20,20 C20,10 28,4 38,6 M2,2 C2,15 10,20 20,20"
+                stroke="var(--gold)"
+                stroke-width="1.6"
+                fill="none"
+                stroke-linecap="round"
+              />
+
+            </svg>
+
+            <h2 class="card-title">
+              Para ti 🌻
+            </h2>
+
+            <p class="card-message">
+
+              Yo vi esta flor y pensé en ti porque es bonita,
+              y bueno, en realidad a mí no me gusta,
+              pero creí que te gustaría porque tú sí eres bonita
+
+              <br>
+
+              SHERK 2001.
+
+            </p>
+
+            <p class="card-message small">
+
+              Hoy quiero regalarte estas flores amarillas,
+              pero sobre todo quiero recordarte lo especial que eres.
+
+            </p>
+
+            <div class="card-divider"></div>
+
+            <p class="card-message small">
+              Feliz Día de las Flores Amarillas 💛
+            </p>
+
+            <p class="card-sign">
+              Con cariño, Octavio
+            </p>
+
+          </section>
+
+          <section class="card-back">
+
+            <div class="photo-frame">
+
+              <img
+                src="foto.jpg"
+                alt="Un recuerdo especial"
+              />
+
+            </div>
+
+          </section>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+
+<footer>
+
+  <div class="footer-date">
+    21 de septiembre 🌻
+  </div>
+
+  <div class="footer-sub">
+    Un pequeño detalle para alguien muy especial.
+  </div>
+
+</footer>
+
+<!-- ============================================================
+     LETRERO
+     ============================================================ -->
+
+<div
+  id="interaction-hint"
+  class="interaction-hint"
+  aria-hidden="true"
+>
+
+  <strong id="hint-title">
+    ✨ Pssst... toca las flores y la tarjeta 🌻
+  </strong>
+
+  <span id="hint-subtitle">
+    Hay pequeños detalles escondidos por aquí...
+  </span>
+
+</div>
+
+<!-- ============================================================
+     BOTÓN DE MÚSICA
+     ============================================================ -->
+
+<button
+  id="music-control"
+  aria-label="Pausar música"
+  title="Pausar música"
+>
+  🎵
+</button>
+
+<script>
+
+/* ============================================================
+   PANTALLA DE CARGA
+   ============================================================ */
+
+const loadingScreen =
+  document.getElementById(
+    'loading-screen'
+  );
+
+window.addEventListener(
+  'load',
+  () => {
+
+    setTimeout(() => {
+
+      loadingScreen.classList.add(
+        'hide'
+      );
+
+    },2500);
+
+  }
+);
+
+/* ============================================================
+   FRASES
+   ============================================================ */
+
+const PHRASES = [
+
+  "Eres especial 💛",
+  "Holis.",
+  "Tú eres genial.",
+  "Este ramo es para ti.",
+  "Te aprecio muchísimo 🌻"
+
+];
+
+/* ============================================================
+   MÚSICA
+   ============================================================ */
+
+const music =
+  document.getElementById(
+    'music'
+  );
+
+const musicControl =
+  document.getElementById(
+    'music-control'
+  );
+
+const MUSIC_START_TIME = 48;
+
+function startMusic(){
+
+  music.volume = 0.45;
+
+  function playFromStartPoint(){
+
+    try{
+
+      music.currentTime =
+        MUSIC_START_TIME;
+
+    }catch(error){
+
+      console.log(
+        "No se pudo establecer el tiempo inicial:",
+        error
+      );
+
+    }
+
+    music.play()
+
+      .then(() => {
+
+        musicControl.classList.add(
+          'show'
+        );
+
+        musicControl.textContent =
+          '🎵';
+
+        musicControl.setAttribute(
+          'aria-label',
+          'Pausar música'
+        );
+
+        musicControl.setAttribute(
+          'title',
+          'Pausar música'
+        );
+
+      })
+
+      .catch(error => {
+
+        console.log(
+          "El navegador no permitió reproducir la música:",
+          error
+        );
+
+      });
+
+  }
+
+  if(music.readyState >= 1){
+
+    playFromStartPoint();
+
+  }else{
+
+    music.addEventListener(
+      'loadedmetadata',
+      playFromStartPoint,
+      {
+        once:true
+      }
+    );
+
+    music.load();
+
+  }
+
+}
+
+/* ============================================================
+   CONTROL DE MÚSICA
+   ============================================================ */
+
+musicControl.addEventListener(
+  'click',
+  () => {
+
+    if(music.paused){
+
+      music.play()
+
+        .then(() => {
+
+          musicControl.textContent =
+            '🎵';
+
+          musicControl.setAttribute(
+            'aria-label',
+            'Pausar música'
+          );
+
+          musicControl.setAttribute(
+            'title',
+            'Pausar música'
+          );
+
+        })
+
+        .catch(error => {
+
+          console.log(
+            "No se pudo reproducir la música:",
+            error
+          );
+
+        });
+
+    }else{
+
+      music.pause();
+
+      musicControl.textContent =
+        '🔇';
+
+      musicControl.setAttribute(
+        'aria-label',
+        'Reproducir música'
+      );
+
+      musicControl.setAttribute(
+        'title',
+        'Reproducir música'
+      );
+
+    }
+
+  }
+);
+
+/* ============================================================
+   GENERAR PÉTALOS
+   ============================================================ */
+
+function makePetals(
+  groupId,
+  count,
+  radius,
+  length,
+  width,
+  opacity,
+  extraRotate
+){
+
+  const g =
+    document.getElementById(
+      groupId
+    );
+
+  if(!g) return;
+
+  for(
+    let i=0;
+    i<count;
+    i++
+  ){
+
+    const angle =
+      (360/count)*i +
+      extraRotate;
+
+    const p =
+      document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "path"
+      );
+
+    const d = `
+
+      M0,0
+
+      C
+        ${width},-${length*0.35}
+        ${width*0.6},-${length*0.85}
+        0,-${length}
+
+      C
+        -${width*0.6},-${length*0.85}
+        -${width},-${length*0.35}
+        0,0
+
+      Z
+
+    `;
+
+    p.setAttribute(
+      "d",
+      d
+    );
+
+    p.setAttribute(
+      "fill",
+      "url(#petalGrad)"
+    );
+
+    p.setAttribute(
+      "class",
+      "petal"
+    );
+
+    p.setAttribute(
+      "transform",
+      `rotate(${angle}) translate(0,-${radius})`
+    );
+
+    p.setAttribute(
+      "opacity",
+      opacity
+    );
+
+    g.appendChild(p);
+
+  }
+
+}
+
+/* ============================================================
+   FLORES A - C
+   ============================================================ */
+
+makePetals(
+  "petalsBackA",
+  8,
+  20,
+  150,
+  46,
+  .9,
+  22.5
+);
+
+makePetals(
+  "petalsFrontA",
+  8,
+  18,
+  130,
+  40,
+  1,
+  0
+);
+
+makePetals(
+  "petalsBackB",
+  8,
+  20,
+  150,
+  46,
+  .9,
+  22.5
+);
+
+makePetals(
+  "petalsFrontB",
+  8,
+  18,
+  130,
+  40,
+  1,
+  0
+);
+
+makePetals(
+  "petalsBackC",
+  8,
+  20,
+  150,
+  46,
+  .9,
+  22.5
+);
+
+makePetals(
+  "petalsFrontC",
+  8,
+  18,
+  130,
+  40,
+  1,
+  0
+);
+
+/* ============================================================
+   FLORES D - E
+   ============================================================ */
+
+makePetals(
+  "petalsBackD",
+  8,
+  18,
+  145,
+  43,
+  .9,
+  22.5
+);
+
+makePetals(
+  "petalsFrontD",
+  8,
+  16,
+  125,
+  37,
+  1,
+  0
+);
+
+makePetals(
+  "petalsBackE",
+  8,
+  18,
+  145,
+  43,
+  .9,
+  22.5
+);
+
+makePetals(
+  "petalsFrontE",
+  8,
+  16,
+  125,
+  37,
+  1,
+  0
+);
+
+/* ============================================================
+   FLORES F - I
+   ============================================================ */
+
+makePetals(
+  "petalsBackF",
+  8,
+  15,
+  130,
+  39,
+  .9,
+  22.5
+);
+
+makePetals(
+  "petalsFrontF",
+  8,
+  13,
+  112,
+  34,
+  1,
+  0
+);
+
+makePetals(
+  "petalsBackG",
+  8,
+  15,
+  130,
+  39,
+  .9,
+  22.5
+);
+
+makePetals(
+  "petalsFrontG",
+  8,
+  13,
+  112,
+  34,
+  1,
+  0
+);
+
+makePetals(
+  "petalsBackH",
+  8,
+  16,
+  132,
+  40,
+  .9,
+  22.5
+);
+
+makePetals(
+  "petalsFrontH",
+  8,
+  14,
+  114,
+  34,
+  1,
+  0
+);
+
+makePetals(
+  "petalsBackI",
+  8,
+  16,
+  132,
+  40,
+  .9,
+  22.5
+);
+
+makePetals(
+  "petalsFrontI",
+  8,
+  14,
+  114,
+  34,
+  1,
+  0
+);
+
+/* ============================================================
+   MOTAS
+   ============================================================ */
+
+const motesWrap =
+  document.getElementById(
+    'motes'
+  );
+
+for(
+  let i=0;
+  i<26;
+  i++
+){
+
+  const m =
+    document.createElement(
+      'div'
+    );
+
+  m.className =
+    'mote';
+
+  const size =
+    2 + Math.random()*4;
+
+  m.style.width =
+    size+'px';
+
+  m.style.height =
+    size+'px';
+
+  m.style.left =
+    Math.random()*100+'vw';
+
+  m.style.bottom =
+    -Math.random()*20+'px';
+
+  m.style.animationDuration =
+    (10 + Math.random()*14)+'s';
+
+  m.style.animationDelay =
+    (Math.random()*10)+'s';
+
+  motesWrap.appendChild(
+    m
+  );
+
+}
+
+/* ============================================================
+   PÉTALOS CAYENDO
+   ============================================================ */
+
+function spawnFallingPetal(){
+
+  const p =
+    document.createElement(
+      'div'
+    );
+
+  p.className =
+    'falling-petal';
+
+  p.style.left =
+    Math.random()*100+'vw';
+
+  p.style.setProperty(
+    '--drift',
+    (Math.random()*140-70)+'px'
+  );
+
+  p.style.animationDuration =
+    (5 + Math.random()*4)+'s';
+
+  p.style.background =
+    Math.random() > .5
+      ? 'var(--petal)'
+      : 'var(--petal-tip)';
+
+  document.body.appendChild(
+    p
+  );
+
+  setTimeout(
+    () => p.remove(),
+    10000
+  );
+
+}
+
+/* ============================================================
+   LETRERO
+   ============================================================ */
+
+const interactionHint =
+  document.getElementById(
+    'interaction-hint'
+  );
+
+const hintTitle =
+  document.getElementById(
+    'hint-title'
+  );
+
+const hintSubtitle =
+  document.getElementById(
+    'hint-subtitle'
+  );
+
+function showInteractionHint(){
+
+  interactionHint.classList.remove(
+    'hide'
+  );
+
+  interactionHint.classList.add(
+    'show'
+  );
+
+}
+
+function hideInteractionHint(){
+
+  interactionHint.classList.add(
+    'hide'
+  );
+
+}
+
+function showPhotoHint(){
+
+  hintTitle.textContent =
+    "📸 Ahora puedes tocar la foto";
+
+  hintSubtitle.textContent =
+    "Ese recuerdo también es parte del regalo 💛";
+
+  showInteractionHint();
+
+  setTimeout(
+    () => {
+      hideInteractionHint();
+    },
+    5000
+  );
+
+}
+
+/* ============================================================
+   REVELAR REGALO
+   ============================================================ */
+
+const introEl =
+  document.getElementById(
+    'intro'
+  );
+
+const stageEl =
+  document.getElementById(
+    'stage'
+  );
+
+const revealBtn =
+  document.getElementById(
+    'reveal-btn'
+  );
+
+revealBtn.addEventListener(
+  'click',
+  () => {
+
+    startMusic();
+
+    introEl.classList.add(
+      'hidden'
+    );
+
+    stageEl.classList.add(
+      'show'
+    );
+
+    setTimeout(
+      () => {
+        showInteractionHint();
+      },
+      1200
+    );
+
+    setTimeout(
+      () => {
+        hideInteractionHint();
+      },
+      6500
+    );
+
+    let burst = 0;
+
+    const burstTimer =
+      setInterval(
+        () => {
+
+          spawnFallingPetal();
+
+          burst++;
+
+          if(burst > 14){
+
+            clearInterval(
+              burstTimer
+            );
+
+          }
+
+        },
+        160
+      );
+
+    setInterval(
+      spawnFallingPetal,
+      2800
+    );
+
+  }
+);
+
+/* ============================================================
+   GIRAR TARJETA
+   ============================================================ */
+
+const cardWrap =
+  document.getElementById(
+    'cardWrap'
+  );
+
+cardWrap.addEventListener(
+  'click',
+  () => {
+
+    if(
+      !stageEl.classList.contains(
+        'show'
+      )
+    ){
+      return;
+    }
+
+    cardWrap.classList.toggle(
+      'flipped'
+    );
+
+    if(
+      cardWrap.classList.contains(
+        'flipped'
+      )
+    ){
+
+      showPhotoHint();
+
+    }else{
+
+      hintTitle.textContent =
+        "✨ Pssst... toca las flores y la tarjeta 🌻";
+
+      hintSubtitle.textContent =
+        "Hay pequeños detalles escondidos por aquí...";
+
+      showInteractionHint();
+
+      setTimeout(
+        () => {
+          hideInteractionHint();
+        },
+        4000
+      );
+
+    }
+
+  }
+);
+
+/* ============================================================
+   MOVIMIENTO DE LAS FLORES
+   ============================================================ */
+
+function wiggle(el){
+
+  if(!el) return;
+
+  el.animate(
+
+    [
+
+      {
+        transform:
+          'rotate(0deg)'
+      },
+
+      {
+        transform:
+          'rotate(-12deg)'
+      },
+
+      {
+        transform:
+          'rotate(10deg)'
+      },
+
+      {
+        transform:
+          'rotate(-7deg)'
+      },
+
+      {
+        transform:
+          'rotate(5deg)'
+      },
+
+      {
+        transform:
+          'rotate(-2deg)'
+      },
+
+      {
+        transform:
+          'rotate(0deg)'
+      }
+
+    ],
+
+    {
+      duration:900,
+      easing:'ease-in-out'
+    }
+
+  );
+
+}
+
+/* ============================================================
+   MOSTRAR FRASE
+   ============================================================ */
+
+function showPhrase(x,y){
+
+  const phrase =
+    PHRASES[
+      Math.floor(
+        Math.random() *
+        PHRASES.length
+      )
+    ];
+
+  const el =
+    document.createElement(
+      'div'
+    );
+
+  el.className =
+    'float-phrase';
+
+  el.textContent =
+    phrase;
+
+  el.style.left =
+    x+'px';
+
+  el.style.top =
+    (y-20)+'px';
+
+  document.body.appendChild(
+    el
+  );
+
+  setTimeout(
+    () => el.remove(),
+    2600
+  );
+
+}
+
+/* ============================================================
+   REFERENCIAS A LAS 9 FLORES
+   ============================================================ */
+
+const bloomA =
+  document.getElementById(
+    'bloomA'
+  );
+
+const bloomB =
+  document.getElementById(
+    'bloomB'
+  );
+
+const bloomC =
+  document.getElementById(
+    'bloomC'
+  );
+
+const bloomD =
+  document.getElementById(
+    'bloomD'
+  );
+
+const bloomE =
+  document.getElementById(
+    'bloomE'
+  );
+
+const bloomF =
+  document.getElementById(
+    'bloomF'
+  );
+
+const bloomG =
+  document.getElementById(
+    'bloomG'
+  );
+
+const bloomH =
+  document.getElementById(
+    'bloomH'
+  );
+
+const bloomI =
+  document.getElementById(
+    'bloomI'
+  );
+
+const swayGroup =
+  document.querySelector(
+    '.sway'
+  );
+
+/* ============================================================
+   TOCAR CUALQUIER FLOR
+   ============================================================ */
+
+[
+  [bloomA,'A'],
+  [bloomB,'B'],
+  [bloomC,'C'],
+  [bloomD,'D'],
+  [bloomE,'E'],
+  [bloomF,'F'],
+  [bloomG,'G'],
+  [bloomH,'H'],
+  [bloomI,'I']
+]
+
+.forEach(
+  ([el]) => {
+
+    el.addEventListener(
+      'click',
+      (e) => {
+
+        e.stopPropagation();
+
+        if(
+          !stageEl.classList.contains(
+            'show'
+          )
+        ){
+          return;
+        }
+
+        wiggle(el);
+
+        showPhrase(
+          e.clientX,
+          e.clientY
+        );
+
+      }
+    );
+
+  }
+);
+
+/* ============================================================
+   TOCAR EL RAMO
+   ============================================================ */
+
+document
+  .getElementById(
+    'flowerSvg'
+  )
+  .addEventListener(
+    'click',
+    (e) => {
+
+      if(
+        !stageEl.classList.contains(
+          'show'
+        )
+      ){
+        return;
+      }
+
+      wiggle(
+        swayGroup
+      );
+
+      showPhrase(
+        e.clientX,
+        e.clientY
+      );
+
+    }
+  );
+
+</script>
+
+</body>
+</html>
